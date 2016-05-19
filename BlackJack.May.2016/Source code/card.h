@@ -18,6 +18,7 @@ namespace bj
 		void setSuit(char);
 		//void draw();//draw the shape of a playing card with a number and suit
 	};
+	std::ostream& operator<<(std::ostream&, const card&);
 }
 
 #endif

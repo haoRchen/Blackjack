@@ -14,6 +14,7 @@ namespace bj
 
 	card::card(int value)
 	{
+		cout << value << endl;//testing randomized value
 		if (value >= 1 && value <= 13)
 		{
 			setSuit('H');
@@ -46,14 +47,19 @@ namespace bj
 	}
 	
 	void card::setNumber(int value)
-	{
-		if (value < 11)
+	{	
+		if (value > 1 && value < 11)
 		{
 			//number[0] = value;
 			itoa(value, number, 10);
 			//convert an int value to string(created already), with 10 being decimal base)
 			//number[MAX_NUMBER_SIZE] = '\0';
 			//do not need to manually terminate as string is an object that contains a null terminator
+		}
+		else if (value == 1)
+		{
+			strcpy(number, "Ace");
+			number[MAX_NUMBER_SIZE] = '\0';
 		}
 		else if (value == 11)
 		{
@@ -84,6 +90,10 @@ namespace bj
 		suit = s;
 	}
 
-
+	std::ostream& operator<<(std::ostream& os, const card& c)
+	{
+		os << "Card: " << c.getNumber() << " Suit: " << c.getSuit() << endl;
+		return os;
+	}
 
 }
