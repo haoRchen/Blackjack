@@ -2,6 +2,7 @@
 #include <time.h> //time
 #include <stdlib.h> //srand/rand
 #include "blackjack.h"
+#include "player.h"
 
 using namespace std;
 
@@ -66,6 +67,7 @@ namespace bj {
 			cout <<*card_[top] << endl; //testing for proper storing of card values
 		}
 	}
+	//drawing a card from the top of the deck
 	card* blackjack::pop()
 	{
 		card* tempcard = nullptr;
@@ -79,6 +81,66 @@ namespace bj {
 			top -= 1;
 		}
 		return tempcard;
+	}
+	//main menu
+	int blackjack::menu()
+	{
+		int selection;
+		cout << "BlackJack / 21!" << endl;
+		cout << "1- New Game" << endl;
+		cout << "2- Continue" << endl;
+		cout << "3- Rules" << endl;
+		cout << "0- Exit" << endl;
+		cout << "> ";
+		cin >> selection;
+		cout << endl;
+		cin.ignore(1000, '\n');
+		return selection >= 0 && selection <= 3 ? selection : -1;
+	}
+	//running the program
+	int blackjack::run()
+	{
+		int option = 1;
+		while (option != 0)
+		{
+			option = menu();//receives the user selected option
+
+			switch (option)
+			{
+			case 0:
+			{
+				cout << "See you next time!" << endl;
+
+			}
+			break;
+			case 1://new game, 
+			{
+				char name[100];
+				int ingameoption = 1;
+				cout << "Welcome, please enter your name: " << endl;
+				cin >> name;
+				player newplayer(name);
+				shuffle();
+
+			}
+			break;
+			case 2:
+			{
+
+			}
+			break;
+			case 3:
+			{
+
+			}
+			default:
+			{
+				cout << "===Invalid Selection, try again.===" << endl;
+			}
+
+			}
+		}
+		return 0;
 	}
 
 }
