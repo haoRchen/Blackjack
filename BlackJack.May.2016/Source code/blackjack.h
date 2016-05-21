@@ -20,6 +20,7 @@ namespace bj
 		int getdeck(int) const;
 		card* pop();//draw
 		int menu();
+		int inGameMenu();
 		bool playerHasMoney();
 		bool checkPlayerBet(int);
 		bool deckIsEmpty();
