@@ -16,6 +16,7 @@ namespace bj
 		player();
 		player(const char*);
 		void setChips(int);
+		int getChips() const;
 	};
 
 }
