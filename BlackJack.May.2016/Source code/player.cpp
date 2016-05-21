@@ -30,5 +30,9 @@ namespace bj
 	{
 		chips = c;
 	}
+	int player::getChips() const 
+	{
+		return chips; 
+	}
 
 }
