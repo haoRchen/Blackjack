@@ -82,6 +82,18 @@ namespace bj {
 		}
 		return tempcard;
 	}
+	
+	//check if player has more than 0$
+	bool blackjack::playerHasMoney()
+	{
+		return player_.getChips() >= 0;
+	}
+	//oversight for player bet
+	bool checkPlayerBet(int amount)
+	{
+		return amount >= player_.getChips();
+	}
+	
 	//main menu
 	int blackjack::menu()
 	{
@@ -116,11 +128,21 @@ namespace bj {
 			case 1://new game, 
 			{
 				char name[100];
+				int betAmount;
 				int ingameoption = 1;
 				cout << "Welcome, please enter your name: " << endl;
 				cin >> name;
-				player newplayer(name);
+				player newplayer(name);// delete this, initialize the player object from header file. 
 				shuffle();
+				if (playerHasMoney())
+				{
+					do{
+					cout << "Enter the amount you wish to bet: ";
+					cin >> betAmount;
+					} while(checkPlayerBet(betAmount))
+					
+					
+				}
 
 			}
 			break;
