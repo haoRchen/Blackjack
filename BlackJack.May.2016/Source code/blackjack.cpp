@@ -1,6 +1,7 @@
 #include <iostream>
 #include <time.h> //time
 #include <stdlib.h> //srand/rand
+#include <stdio.h> //sscanf
 #include "blackjack.h"
 #include "player.h"
 
@@ -19,12 +20,22 @@ namespace bj {
 		{
 			card_[i] = nullptr;
 		}
+		for (int i = 0; i < MAX_HAND_SIZE; i++)
+		{
+			house[i] = nullptr;
+		}
+		for (int i = 0; i < MAX_HAND_SIZE; i++)
+		{
+			humanPlayer[i] = nullptr;
+		}
 		//tinialize top position of stack of cards
 		top = -1;
 	}
 	blackjack::~blackjack()
 	{	
 		delete [] card_;
+		delete [] house;
+		delete [] humanPlayer;
 	}
 	//for testing purposes
 	int blackjack::getdeck(int i) const
@@ -109,6 +120,40 @@ namespace bj {
 		cin.ignore(1000, '\n');
 		return selection >= 0 && selection <= 3 ? selection : -1;
 	}
+	//check if the deck is empty
+	bool blackjack::deckIsEmpty()
+	{
+		return top == 0;
+	}
+	//check if cards in hand equates to 21
+	bool blackjack::isTwentyOne(int cardsInHand, card* hand)
+	{
+		int sum = 0, convertedValue;
+		char value[6];
+		for(int counter; counter < cardsInHand; counter++)
+		{
+			strcpy(value, hand[i].getNumber);
+			value[5] = '\0';
+			if(value == 'Ace')
+			{
+				if(sum + 11 > 21)
+				{
+					sum += 1;
+				}
+			}
+			else if( value == 'Jack' || value == 'Queen' || value == 'King')
+			{
+				sum += 10;
+			}
+			else
+			{
+				sscanf(value, "%d", &convertedValue);
+				sum += convertedValue;
+			}
+		}
+		
+		return sum == 21;
+	}
 	//running the program
 	int blackjack::run()
 	{
@@ -128,19 +173,46 @@ namespace bj {
 			case 1://new game, 
 			{
 				char name[100];
-				int betAmount;
-				int ingameoption = 1;
+				int betAmount, counter, playerCardNum = 0, houseCardNum = 0, inGameOption = 1, initialDeal = 1;
 				cout << "Welcome, please enter your name: " << endl;
 				cin >> name;
-				player newplayer(name);// delete this, initialize the player object from header file. 
+				//player newplayer(name);// delete this, initialize the player object from header file. 
+				player_(name);//new player creation with name and chips
 				shuffle();
-				if (playerHasMoney())
+				while (playerHasMoney() && inGameOption != 0)
 				{
+					//must test
+					if(deckIsEmpty())
+					{
+						shuffle();
+					}
 					do{
 					cout << "Enter the amount you wish to bet: ";
 					cin >> betAmount;
-					} while(checkPlayerBet(betAmount))
+					} while(!checkPlayerBet(betAmount))//while bet amount is invalid, re-enter amount. 
 					
+					for (counter = 0; counter < initialDeal; counter++)// 0, then 1.
+					{
+						house[i] = pop();//pop returns a pointer to the top card, change to address??
+						humanPlayer[i] = pop();
+						houseCardNum++;
+						playerCardNum++;
+					}
+					 
+					cout << "House's hand: " << endl;
+					cout << *house[1];
+					cout << "Player's Hand: " << endl;
+					cout << *humanPlayer[0] << *humanPlayer[1];
+					if(!isTwentyOne(playerCardNum, humanPlayer))
+					{
+						//player menu
+					}
+					else
+					{
+						//win round
+						cout << "Win round!" << endl;
+						player_.setChips(betAmount * 2);//win double the bet
+					}
 					
 				}
 
