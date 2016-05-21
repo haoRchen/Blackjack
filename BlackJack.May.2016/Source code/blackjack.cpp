@@ -154,6 +154,19 @@ namespace bj {
 		
 		return sum == 21;
 	}
+	//in game player options
+	int blackjack::inGameMenu()
+	{
+		int selection;
+		cout << "1- Stay" << endl;
+		cout << "2- Hit" << endl;
+		cout << "0- Exit" << endl;
+		cout << "> ";
+		cin >> selection;
+		cout << endl;
+		cin.ignore(1000, '\n');
+		return selection >= 0 && selection <= 2 ? selection : -1;
+	}
 	//running the program
 	int blackjack::run()
 	{
@@ -206,6 +219,31 @@ namespace bj {
 					if(!isTwentyOne(playerCardNum, humanPlayer))
 					{
 						//player menu
+						inGameOption = inGameMenu();
+						switch(inGameOption)
+						case 1:
+						{
+							//reveal house's first card
+							//hit until 17
+							//compare hands
+						}
+						break;
+						case 2:
+						{
+							//player gets one more card 
+							//compare hands
+						}
+						break;
+						case 0:
+						{
+							cout << "Goodbye!" << endl;
+						}
+						break;
+						default:
+						{
+							cout << "invalid selection" << endl;
+						}
+						
 					}
 					else
 					{
