@@ -9,10 +9,6 @@ namespace bj
 	{
 		name[0] = '\0';
 		chips = 0;
-		for (int i = 0; i < MAX_PLAYER_HAND; i++)
-		{
-			hand[i] = nullptr;
-		}
 	}
 
 	player::player(const char* playername)
@@ -20,10 +16,6 @@ namespace bj
 		strcpy(name, playername);
 		name[MAX_PLAYER_NAME] = '\0';
 		chips = 1000;
-		for (int i = 0; i < MAX_PLAYER_HAND; i++)
-		{
-			hand[i] = nullptr;
-		}
 	}
 
 	void player::setChips(int c)
