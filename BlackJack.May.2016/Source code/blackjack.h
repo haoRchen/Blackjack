@@ -12,15 +12,18 @@ namespace bj
 		int deck[MAX_DECK_SIZE];
 		int top;
 		Player player_;
-		card* card_[MAX_DECK_SIZE];//pointer array of card object
-		card* house[MAX_HAND_SIZE];
+		card* card_[MAX_DECK_SIZE];//pointer array of card object/the stack
+		card* house[MAX_HAND_SIZE];//house's hand
+		card* humanPlayer[MAX_HAND_SIZE]; //player's hand
 		void shuffle();
 		void push(int);
 		int getdeck(int) const;
-		card* pop();
+		card* pop();//draw
 		int menu();
 		bool playerHasMoney();
 		bool checkPlayerBet(int);
+		bool deckIsEmpty();
+		bool isTwentyOne(int, card*);
 		
 	public:
 		blackjack();
