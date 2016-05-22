@@ -14,7 +14,7 @@ namespace bj
 
 	card::card(int value)
 	{
-		cout << value << endl;//testing randomized value
+		//cout << value << endl;//testing randomized value
 		if (value >= 1 && value <= 13)
 		{
 			setSuit('H');

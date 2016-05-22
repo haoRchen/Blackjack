@@ -28,14 +28,16 @@ namespace bj {
 		{
 			humanPlayer[i] = nullptr;
 		}
+		player_ = nullptr;
 		//tinialize top position of stack of cards
 		top = -1;
 	}
 	blackjack::~blackjack()
 	{	
-		delete [] card_;
-		delete [] house;
-		delete [] humanPlayer;
+		delete[] card_;
+		delete[] house;
+		delete[] humanPlayer;
+		delete[] player_;
 	}
 	//for testing purposes
 	int blackjack::getdeck(int i) const
@@ -63,6 +65,7 @@ namespace bj {
 			
 
 		}
+		cout << "deck shuffled!" << endl;//testing for occurance
 	}
 	//pushing cards into array of object pointer
 	void blackjack::push(int cardnumber)
@@ -75,7 +78,7 @@ namespace bj {
 		{
 			top += 1;//first position will be index 0!
 			card_[top] = new card(cardnumber);
-			cout <<*card_[top] << endl; //testing for proper storing of card values
+			//cout <<*card_[top] << endl; //testing for proper storing of card values
 		}
 	}
 	//drawing a card from the top of the deck
@@ -97,12 +100,14 @@ namespace bj {
 	//check if player has more than 0$
 	bool blackjack::playerHasMoney()
 	{
-		return player_.getChips() >= 0;
+		cout << "checking player money" << endl;//testing for proper access/value
+		return player_->getChips() >= 0;
 	}
 	//oversight for player bet
-	bool checkPlayerBet(int amount)
+	bool blackjack::checkPlayerBet(int amount)
 	{
-		return amount >= player_.getChips();
+		cout << "checking player bet" << endl;//testing for proper access/value
+		return amount <= player_->getChips();
 	}
 	
 	//main menu
@@ -123,25 +128,25 @@ namespace bj {
 	//check if the deck is empty
 	bool blackjack::deckIsEmpty()
 	{
-		return top == 0;
+		return top <= 10;
 	}
 	//check if cards in hand equates to 21
-	bool blackjack::isTwentyOne(int cardsInHand, card* hand)
+	int blackjack::handValue(int cardsInHand, card* hand)
 	{
 		int sum = 0, convertedValue;
 		char value[6];
-		for(int counter; counter < cardsInHand; counter++)
+		for(int counter = 0; counter < cardsInHand; counter++)
 		{
-			strcpy(value, hand[i].getNumber);
+			strcpy(value, hand[counter].getNumber());
 			value[5] = '\0';
-			if(value == 'Ace')
+			if(value == "Ace")
 			{
 				if(sum + 11 > 21)
 				{
 					sum += 1;
 				}
 			}
-			else if( value == 'Jack' || value == 'Queen' || value == 'King')
+			else if( value == "Jack" || value == "Queen" || value == "King")
 			{
 				sum += 10;
 			}
@@ -151,9 +156,32 @@ namespace bj {
 				sum += convertedValue;
 			}
 		}
-		
-		return sum == 21;
+		cout << "hand value checked" << endl;//testing function call
+		return sum;
 	}
+	//reveal hands
+	void blackjack::showHands(int noOfHouseCard, card* theHouse, int noOfPlayerCard, card* thePlayer, bool firstDeal)
+	{
+		int counter;
+		cout << "House's hand: " << endl;
+		if (firstDeal)
+		{
+			cout << theHouse[1];
+		}
+		else
+		{
+			for (counter = 0; counter < noOfHouseCard; counter++)
+			{
+				cout << theHouse[counter];
+			}
+		}
+		cout << "Player's Hand: " << endl;
+		for (counter = 0; counter < noOfHouseCard; counter++)
+		{
+			cout << thePlayer[counter];
+		}
+	}
+	
 	//in game player options
 	int blackjack::inGameMenu()
 	{
@@ -177,98 +205,138 @@ namespace bj {
 
 			switch (option)
 			{
-			case 0:
-			{
-				cout << "See you next time!" << endl;
-
-			}
-			break;
-			case 1://new game, 
-			{
-				char name[100];
-				int betAmount, counter, playerCardNum = 0, houseCardNum = 0, inGameOption = 1, initialDeal = 1;
-				cout << "Welcome, please enter your name: " << endl;
-				cin >> name;
-				//player newplayer(name);// delete this, initialize the player object from header file. 
-				player_(name);//new player creation with name and chips
-				shuffle();
-				while (playerHasMoney() && inGameOption != 0)
+				case 0:
 				{
-					//must test
-					if(deckIsEmpty())
+					cout << "See you next time!" << endl;
+
+				}
+				break;
+				case 1://new game, 
+				{
+					char name[100];
+					int betAmount, counter, playerCardNum = 0, houseCardNum = 0, inGameOption = 1, initialDeal = 2;
+					bool playerWin, tie, roundEnd;
+					cout << "Welcome, please enter your name: " << endl;
+					cin >> name;
+					player_ = new player(name);//new player creation with name and chips
+					shuffle();
+					while (playerHasMoney() && inGameOption != 0)
 					{
-						shuffle();
-					}
-					do{
-					cout << "Enter the amount you wish to bet: ";
-					cin >> betAmount;
-					} while(!checkPlayerBet(betAmount))//while bet amount is invalid, re-enter amount. 
+						roundEnd = false;
+						//must test
+						if(deckIsEmpty())
+						{
+							shuffle();
+						}
+						do{
+						cout << "Enter the amount you wish to bet: ";//stuck in constant loop>>>??
+						cin >> betAmount;
+						} while (!checkPlayerBet(betAmount));//while bet amount is invalid, re-enter amount. 
 					
-					for (counter = 0; counter < initialDeal; counter++)// 0, then 1.
-					{
-						house[i] = pop();//pop returns a pointer to the top card, change to address??
-						humanPlayer[i] = pop();
-						houseCardNum++;
-						playerCardNum++;
-					}
+						for (counter = 0; counter < initialDeal; counter++)// 0, then 1.
+						{
+							house[counter] = pop();//pop returns a pointer to the top card, change to address??
+							humanPlayer[counter] = pop();
+							houseCardNum++;
+							playerCardNum++;
+						}
 					 
-					cout << "House's hand: " << endl;
-					cout << *house[1];
-					cout << "Player's Hand: " << endl;
-					cout << *humanPlayer[0] << *humanPlayer[1];
-					if(!isTwentyOne(playerCardNum, humanPlayer))
-					{
-						//player menu
-						inGameOption = inGameMenu();
-						switch(inGameOption)
-						case 1:
-						{
-							//reveal house's first card
-							//hit until 17
-							//compare hands
+						showHands(houseCardNum, *house, playerCardNum, *humanPlayer, true);//initial deal
+						while (!roundEnd)//handValue(playerCardNum, *humanPlayer) != 21 && handValue(playerCardNum, *humanPlayer) < 21 &&  taken out
+						{//player menu
+							inGameOption = inGameMenu();
+							switch (inGameOption)
+							{
+								case 1:
+								{
+									showHands(houseCardNum, *house, playerCardNum, *humanPlayer, false);
+									while (handValue(houseCardNum, *house) < 17)
+									{
+										house[counter] = pop();
+										cout << *house[counter];
+										counter++;
+										houseCardNum++;
+									}
+									if (handValue(houseCardNum, *house) > 21)
+									{
+										playerWin = false;
+										roundEnd = true;
+									}
+									else
+									{
+										if (handValue(playerCardNum, *humanPlayer) == handValue(houseCardNum, *house))
+										{
+											tie = true;
+											roundEnd = true;
+										}
+										else
+										{
+											playerWin = true; //handValue(playerCardNum, *humanPlayer) > handValue(houseCardNum, *house)
+											roundEnd = true;
+										}
+									}
+								}
+								break;
+								case 2:
+								{
+									humanPlayer[counter] = pop();
+									cout << *humanPlayer[counter];
+									counter++;
+									playerCardNum++;
+									if (handValue(playerCardNum, *humanPlayer) > 21)
+									{
+										roundEnd = true;
+										playerWin = false;
+										cout << "Bust!" << endl;
+									}
+
+								}
+								break;
+								case 0:
+								{
+									cout << "Goodbye!" << endl;
+								}
+								break;
+								default:
+								{
+									cout << "invalid selection" << endl;
+								}
+							}
 						}
-						break;
-						case 2:
+						if (playerWin)// make if into a while loop?
 						{
-							//player gets one more card 
-							//compare hands
+							//win round
+							cout << "Win round!" << endl;
+							player_->setChips(player_->getChips() + (betAmount * 2));//win double the bet
 						}
-						break;
-						case 0:
+						else if (tie)
 						{
-							cout << "Goodbye!" << endl;
+							cout << "Tie" << endl;
 						}
-						break;
-						default:
+						else
 						{
-							cout << "invalid selection" << endl;
+							cout << "Lost round" << endl;
+							player_->setChips(player_->getChips() - betAmount);
 						}
 						
-					}
-					else
-					{
-						//win round
-						cout << "Win round!" << endl;
-						player_.setChips(betAmount * 2);//win double the bet
-					}
 					
+					}
+
 				}
-
-			}
-			break;
-			case 2:
-			{
-
-			}
-			break;
-			case 3:
-			{
-
-			}
-			default:
-			{
-				cout << "===Invalid Selection, try again.===" << endl;
-			}
+				break;
+				case 2:
+				{
+					cout << "load saved game" << endl;
+				}
+				break;
+				case 3:
+				{
+					cout << "rules" << endl;
+				}
+				default:
+				{
+					cout << "===Invalid Selection, try again.===" << endl;
+				}
 
 			}
 		}
