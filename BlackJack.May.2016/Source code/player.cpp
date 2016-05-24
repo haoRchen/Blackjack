@@ -15,7 +15,9 @@ namespace bj
 	{
 		strcpy(name, playername);
 		name[MAX_PLAYER_NAME] = '\0';
-		chips = 1000;
+		chips = 10000;
+		cout << "player name:" << name << endl;
+		cout << "player chips:" << chips << endl;//testing for object creation
 	}
 
 	void player::setChips(int c)

@@ -11,10 +11,11 @@ namespace bj
 	class blackjack {
 		int deck[MAX_DECK_SIZE];
 		int top;
-		Player player_;
+		player* player_;
 		card* card_[MAX_DECK_SIZE];//pointer array of card object/the stack
 		card* house[MAX_HAND_SIZE];//house's hand
 		card* humanPlayer[MAX_HAND_SIZE]; //player's hand
+		void resetHand();//delete previously assigned addresses to card*
 		void shuffle();
 		void push(int);
 		int getdeck(int) const;
@@ -24,7 +25,11 @@ namespace bj
 		bool playerHasMoney();
 		bool checkPlayerBet(int);
 		bool deckIsEmpty();
-		bool isTwentyOne(int, card*);
+		int handValue(int, card* []);
+		void showHands(int, card* [], int, card* [], bool);
+		void clearScreen();
+		void rules();
+		void pause();
 		
 	public:
 		blackjack();

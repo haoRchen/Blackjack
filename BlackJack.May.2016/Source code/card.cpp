@@ -14,7 +14,7 @@ namespace bj
 
 	card::card(int value)
 	{
-		cout << value << endl;//testing randomized value
+		//cout << value << endl;//testing randomized value
 		if (value >= 1 && value <= 13)
 		{
 			setSuit('H');
@@ -92,7 +92,9 @@ namespace bj
 
 	std::ostream& operator<<(std::ostream& os, const card& c)
 	{
-		os << "Card: " << c.getNumber() << " Suit: " << c.getSuit() << endl;
+		os << "---------------------" << endl;
+		os << "| Card: " << c.getNumber() << " Suit: " << c.getSuit() << "|"<< endl;
+		os << "---------------------" << endl;
 		return os;
 	}
 
