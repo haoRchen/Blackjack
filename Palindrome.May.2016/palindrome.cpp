@@ -7,7 +7,7 @@ int main()
 {
 	string word;
 	int top;
-	bool palindrome;
+	bool palindrome; //trigger whether or not word is palindrome
 
 	do
 	{
@@ -18,13 +18,14 @@ int main()
 		cout << "-------------------" << endl;
 		cout << "To exit, enter 0." << endl << endl;
 		cout << "Enter word > ";
-		cin >> word;
-		vector <char>original(word.begin(), word.end());
-		vector <char>reversed;
+		cin >> word; //store word in string 
+		vector <char>original(word.begin(), word.end()); //initializing vector to the word
+		vector <char>reversed; //used to store the word read backwards
 
 		for (int i = original.size()-1; i >= 0; i--)
 		{
 			reversed.push_back(original.at(i));
+			//if one of the characters don't match, the word is not palindrome
 			if (reversed.at(top) != original.at(top))
 			{
 				palindrome = false;
@@ -41,6 +42,7 @@ int main()
 		{
 			cout << "The word is a palindrome." << endl;
 		}
+		//spaces to look more presentable
 		for (int a = 0; a < 10; a++)
 		{
 			cout << endl;
