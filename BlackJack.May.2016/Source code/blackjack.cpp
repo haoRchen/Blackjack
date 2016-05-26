@@ -146,9 +146,8 @@ namespace bj {
 		cout << "#                      #" << endl;
 		cout << "#   BlackJack / 21!    #" << endl;
 		cout << "#   ===============    #" << endl;
-		cout << "#   | 1- New Game |    #" << endl;
-		cout << "#   | 2- Continue |    #" << endl;
-		cout << "#   | 3- Rules    |    #" << endl;
+		cout << "#   | 1- Play     |    #" << endl;
+		cout << "#   | 2- Rules    |    #" << endl;
 		cout << "#   | 0- Exit     |    #" << endl;
 		cout << "#   |_____________|    #" << endl;
 		cout << "#                      #" << endl;
@@ -170,7 +169,7 @@ namespace bj {
 			}
 		} while (!validInput);
 		cout << endl;
-		return selection >= 0 && selection <= 3 ? selection : -1;
+		return selection >= 0 && selection <= 2 ? selection : -1;
 	}
 	//check if the deck is empty
 	bool blackjack::deckIsEmpty()
@@ -278,6 +277,10 @@ namespace bj {
 		cout << "|      Once the player stands, the dealer must continue to draw until hand value is 17 or over.        |" << endl;
 		cout << "|      The player wins if dealer's hand value is over 21 (Bust)                                        |" << endl;
 		cout << "|                                                                                                      |" << endl;
+		cout << "|  Doubling Down:                                                                                      |" << endl;
+		cout << "|      This option will be presented only when the hand value of the player is 9, 10 or 11 after       |" << endl;
+		cout << "|          the initial deal. The player can choose to place a bet equal to the original amount,        |" << endl;
+		cout << "|          and will receive one card from the dealer.                                                  |" << endl;
 		cout << "|______________________________________________________________________________________________________|" << endl;
 
 
@@ -301,7 +304,6 @@ namespace bj {
 		cout << "|---------|" << endl;
 		cout << "| 1- Stay |" << endl;
 		cout << "| 2- Hit  |" << endl;
-		cout << "| 3- Save |" << endl;
 		cout << "| 0- Exit |" << endl;
 		cout << "|_________|" << endl;
 		cout << "> ";
@@ -316,7 +318,7 @@ namespace bj {
 			{
 				cin.clear();
 				cin.ignore(1000, '\n');
-				cout << "Invalid input, please re-enter!" << endl;
+				cout << "--Invalid input, please re-enter!--" << endl;
 				cout << "> ";
 			}
 		} while (!validInput);
@@ -343,7 +345,7 @@ namespace bj {
 			{
 				cin.clear();
 				cin.ignore(1000, '\n');
-				cout << "Invalid input, please re-enter!" << endl;
+				cout << "--Invalid input, please re-enter!--" << endl;
 				cout << "> ";
 			}
 		} while (!validInput);
@@ -363,7 +365,7 @@ namespace bj {
 			{
 				case 0:
 				{
-					cout << "See you next time!" << endl;
+					cout << "--See you next time!--" << endl;
 					pause();
 
 				}
@@ -418,6 +420,7 @@ namespace bj {
 						{
 							roundEnd = true;
 							playerWin = false;
+							cout << "--House has 21!--" << endl;
 						}
 						if (playerHandValue == 9 || playerHandValue == 10 || playerHandValue == 11)//trigger double down option
 						{
@@ -451,92 +454,88 @@ namespace bj {
 
 								switch (inGameOption)
 								{
-								case 1:
-								{
-									while (handValue(houseCardNum, house) < 17)
+									case 0:
 									{
-										clearScreen();
-										showHands(houseCardNum, house, playerCardNum, humanPlayer, false);
-										house[houseCardNum] = pop();
-										cout << *house[houseCardNum];//another clear screen with show card
-										houseCardNum++;
-
+										cout << "--Goodbye!--" << endl;
+										delete player_;
 									}
-									if (handValue(houseCardNum, house) > 21)
+									break;
+									case 1:
 									{
-										clearScreen();
-										showHands(houseCardNum, house, playerCardNum, humanPlayer, false);
-										playerWin = true;
-										cout << "House Bust!" << endl;
-										roundEnd = true;
-									}
-									else
-									{
-										clearScreen();
-										showHands(houseCardNum, house, playerCardNum, humanPlayer, false);
-										if (handValue(playerCardNum, humanPlayer) == handValue(houseCardNum, house))
+										while (handValue(houseCardNum, house) < 17)
 										{
-											tie = true;
+											clearScreen();
+											showHands(houseCardNum, house, playerCardNum, humanPlayer, false);
+											house[houseCardNum] = pop();
+											cout << *house[houseCardNum];//another clear screen with show card
+											houseCardNum++;
+
+										}
+										if (handValue(houseCardNum, house) > 21)
+										{
+											clearScreen();
+											showHands(houseCardNum, house, playerCardNum, humanPlayer, false);
+											playerWin = true;
+											cout << "--House Bust!--" << endl;
 											roundEnd = true;
 										}
 										else
 										{
-											playerWin = handValue(playerCardNum, humanPlayer) > handValue(houseCardNum, house);
-											roundEnd = true;
+											clearScreen();
+											showHands(houseCardNum, house, playerCardNum, humanPlayer, false);
+											if (handValue(playerCardNum, humanPlayer) == handValue(houseCardNum, house))
+											{
+												tie = true;
+												roundEnd = true;
+											}
+											else
+											{
+												playerWin = handValue(playerCardNum, humanPlayer) > handValue(houseCardNum, house);
+												roundEnd = true;
+											}
 										}
 									}
-								}
-								break;
-								case 2:
-								{
-									clearScreen();
-									showHands(houseCardNum, house, playerCardNum, humanPlayer, true);//doesn't reveal house's other card
-									humanPlayer[playerCardNum] = pop();
-									cout << *humanPlayer[playerCardNum];
-									playerCardNum++;
-									if (handValue(playerCardNum, humanPlayer) > 21)
+									break;
+									case 2:
 									{
-										roundEnd = true;
-										playerWin = false;
-										cout << "Player Bust!" << endl;
-									}
+										clearScreen();
+										showHands(houseCardNum, house, playerCardNum, humanPlayer, true);//doesn't reveal house's other card
+										humanPlayer[playerCardNum] = pop();
+										cout << *humanPlayer[playerCardNum];
+										playerCardNum++;
+										if (handValue(playerCardNum, humanPlayer) > 21)
+										{
+											roundEnd = true;
+											playerWin = false;
+											cout << "--Player Bust!--" << endl;
+										}
 
-								}
-								break;
-								case 3:
-								{
-									cout << "Game saved!" << endl;
-								}
-								case 0:
-								{
-									cout << "Goodbye!" << endl;
-									delete player_;
-								}
-								break;
-								default:
-								{
-									cout << "invalid selection" << endl;
-								}
+									}
+									break;
+									default:
+									{
+										cout << "====invalid selection====" << endl;
+									}
 								}
 							}
 						}
 						if (playerWin)// make if into a while loop?
 						{
 							//win round
-							cout << "Win round!" << endl;
-							pause();
+							cout << "--Win round!--" << endl;
 							player_->setChips(player_->getChips() + betAmount);//win double the bet
+
 						}
 						else if (tie)
 						{
-							cout << "Tie" << endl;
-							pause();
+							cout << "--Tie--" << endl;
+
 						}
 						else if(!playerWin)
 						{
-							cout << "Lost round" << endl;
-							pause();
+							cout << "--Lost round--" << endl;
 							player_->setChips(player_->getChips() - betAmount);
+
 						}
 						
 					
@@ -546,11 +545,6 @@ namespace bj {
 				}
 				break;
 				case 2:
-				{
-					cout << "load saved game" << endl;
-				}
-				break;
-				case 3:
 				{
 					clearScreen();
 					rules();
