@@ -13,7 +13,7 @@ namespace bj
 		card();//initializes the class card to a blank slate
 		card(int);//initializes the card according to values being passed in 
 		const char* getNumber() const;
-		void setNumber(int);
+		void setNumber(int); // set card number based on 1-13 
 		const char getSuit() const;
 		void setSuit(char);
 		//void draw();//draw the shape of a playing card with a number and suit

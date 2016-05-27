@@ -15,6 +15,7 @@ namespace bj
 	card::card(int value)
 	{
 		//cout << value << endl;//testing randomized value
+
 		if (value >= 1 && value <= 13)
 		{
 			setSuit('H');
@@ -24,7 +25,7 @@ namespace bj
 		else if (value >= 14 && value <= 26)
 		{
 			setSuit('D');
-			setNumber((value - 13));
+			setNumber((value - 13)); 
 		}
 		else if (value >= 27 && value <= 39)
 		{

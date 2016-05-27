@@ -5,6 +5,6 @@ using namespace std;
 
 int main()
 {
-	bj::blackjack game1("blackjacksave.txt");
+	bj::blackjack game1;
 	return game1.run();
 }

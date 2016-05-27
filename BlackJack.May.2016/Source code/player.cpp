@@ -16,7 +16,7 @@ namespace bj
 		strcpy(name, playername);
 		name[MAX_PLAYER_NAME] = '\0';
 		chips = 10000;
-		//cout << "player name:" << name << endl;
+		//cout << "player name:" << name << endl; // testing for name storing
 		//cout << "player chips:" << chips << endl;//testing for object creation
 	}
 
