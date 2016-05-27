@@ -2,6 +2,7 @@
 #include <time.h> //time
 #include <stdlib.h> //srand/rand
 #include <stdio.h> //sscanf
+#include <cstdlib> //system pause
 #include "blackjack.h"
 #include "player.h"
 
@@ -219,8 +220,10 @@ namespace bj {
 	//pause
 	void blackjack::pause()
 	{
+		cin.clear();
 		cout << "Press Enter to continue..." << endl;
-		cin.ignore(1000, '\n');
+		cin.ignore(2000, '\n');
+
 	}
 
 	//adds white spaces
@@ -329,12 +332,11 @@ namespace bj {
 			else
 			{
 				cin.clear();
-				cin.ignore(1000, '\n');
+				cin.ignore(2000, '\n');
 				cout << "--Invalid input, please re-enter!--" << endl;
 				cout << "> ";
 			}
 		} while (!validInput);
-		cout << endl;
 		return selection;
 	}
 
@@ -364,7 +366,7 @@ namespace bj {
 		int option = 1;
 		while (option != 0)
 		{
-			
+			system("PAUSE");
 			clearScreen();
 			option = menu();
 			switch (option)
@@ -380,11 +382,13 @@ namespace bj {
 				//new game
 				case 1: 
 				{
-					char name[100];
+					char name[1000];
+					pause();
 					int betAmount, doubleDownTrigger = 1, inGameOption = 1, initialDeal = 2;
 					bool playerWin, tie, roundEnd;
-					cout << "Welcome, please enter your name: " << endl;
-					cin >> name;
+					cout << "Welcome, please enter your name: ";
+					cin.getline(name, 1000, '\n');
+					name[999] = '\0';
 					player_ = new player(name);//new player creation with name and chips
 					shuffle();
 					while (playerHasMoney() && inGameOption != 0)
@@ -398,9 +402,21 @@ namespace bj {
 						}
 						do{
 						
+							bool validInput = false;
 							cout << "Chips Amount: " << player_->getChips() << endl;
 							cout << "Enter the amount you wish to bet for this round: ";//stuck in constant loop>>>??
 							cin >> betAmount;
+							if (cin.good()) //check to see if only integers are entered
+							{
+								validInput = true;
+							}
+							else
+							{
+								cin.clear();
+								cin.ignore(2000, '\n');
+								cout << "--Invalid input, please re-enter!--" << endl;
+								cout << "> ";
+							}
 						} while (!checkPlayerBet(betAmount));//while bet amount is invalid, re-enter amount. 
 					
 						for (counter = 0; counter < initialDeal; counter++)// 0, then 1.
@@ -554,7 +570,7 @@ namespace bj {
 							cout << "--Tie--" << endl;
 
 						}
-						else if(!playerWin)
+						else if(!playerWin && inGameOption!= 0)
 						{
 							cout << "--Lost round--" << endl;
 							player_->setChips(player_->getChips() - betAmount);
@@ -563,26 +579,20 @@ namespace bj {
 						
 					
 					}
-					clearScreen();
 
 				}
 				break;
 				//display rules to player
 				case 2:
 				{
-					clearScreen();
 					rules();
-					pause();
-					clearScreen();
+
 				}
 				break;
 				//invalid menu option
 				default:
 				{
-					clearScreen();
 					cout << "===Invalid Selection, try again.===" << endl;
-					pause();
-					clearScreen();
 				}
 
 			}
