@@ -1,11 +1,11 @@
-Simplified blackjack game written in c++
-Play the game using the number pad!
+|Simplified blackjack game written in c++ |Play the game using the number pad!|
 
-How to play BlackJack/21 
+*How to play BlackJack/21*
 ======================================================================================================
-Objective:
 
+Objective:
 Beat the dealer by attempting to get close to 21, without going over!
+
 Card Value: 
 Face cards = 10 | Ace = 1 or 11 | Other cards = face value
 
@@ -38,3 +38,4 @@ This option will be presented only when the hand value of the player is 9, 10 or
 the initial deal. The player can choose to place a bet equal to the original amount, 
 and will receive one card from the dealer.                      
 
+======================================================================================================
