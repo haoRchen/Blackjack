@@ -1,4 +1,5 @@
-|Simplified blackjack game written in c++ |Play the game using the number pad!|
+| Simplified blackjack game written in c++ | Play the game using the number pad! |
+| ------------- |:-------------:|
 
 *How to play BlackJack/21*
 ---
