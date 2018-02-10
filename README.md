@@ -1,7 +1,8 @@
-|Simplified blackjack game written in c++ |Play the game using the number pad!|
+| Simplified blackjack game written in c++ | Play the game using the number pad! |
+| ------------- |:-------------:|
 
 *How to play BlackJack/21*
-======================================================================================================
+---
 
 Objective:
 Beat the dealer by attempting to get close to 21, without going over!
@@ -36,6 +37,6 @@ The player wins if dealer's hand value is over 21 (Bust)
 Doubling Down:                                                                               
 This option will be presented only when the hand value of the player is 9, 10 or 11 after      
 the initial deal. The player can choose to place a bet equal to the original amount, 
-and will receive one card from the dealer.                      
+and will receive one card from the dealer.       
 
-======================================================================================================
+---
